@@ -1,0 +1,8 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T10:55:34Z
+$ kubectl rollout history deployment/notice-board
+deployment.apps/notice-board 
+REVISION  CHANGE-CAUSE
+3         task 5.2: back to 1.0.0
+4         task 5.3: release 1.1.0 with RollingUpdate 0/1, minReady 5
+
+

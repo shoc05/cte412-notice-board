@@ -1,0 +1,13 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T10:55:32Z
+$ scripts/summarise.sh evidence/t5-rolling-monitor.txt
+Total requests       : 129
+Failed requests      : 0
+First timestamp      : 2026-10-13T10:53:48Z
+Last timestamp       : 2026-10-13T10:55:29Z
+Duration             : 101 s
+First / last FAIL    : none
+Responses per version:
+  1.0.0                77   first 2026-10-13T10:53:48Z   last 2026-10-13T10:55:12Z
+  1.1.0                52   first 2026-10-13T10:54:26Z   last 2026-10-13T10:55:29Z
+Mixed-version window : 46 s (1.0.0 and 1.1.0 both observed)
+

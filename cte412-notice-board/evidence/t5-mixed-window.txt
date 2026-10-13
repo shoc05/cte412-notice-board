@@ -1,0 +1,22 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T11:00:15Z
+$ echo "== Recreate"; grep -E "Total|Failed|FAIL|1\.[01]\.0|Mixed" evidence/t5-recreate-summary.txt; tail -1 evidence/t5-recreate-pods.txt
+== Recreate
+Total requests       : 59
+Failed requests      : 12
+First / last FAIL    : 2026-10-13T10:49:12Z / 2026-10-13T10:49:32Z (20 s apart)
+  1.0.0                27   first 2026-10-13T10:48:49Z   last 2026-10-13T10:49:11Z
+  1.1.0                20   first 2026-10-13T10:49:34Z   last 2026-10-13T10:49:50Z
+Mixed-version window : 0 s (1.0.0 and 1.1.0 both observed)
+# peak: 4 notice-board Pods listed | quota used at peak: 4 Pods, requests.cpu 160m of 1000m, requests.memory 208Mi of 1024Mi
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T11:00:15Z
+$ echo "== RollingUpdate"; grep -E "Total|Failed|FAIL|1\.[01]\.0|Mixed" evidence/t5-rolling-summary.txt; tail -1 evidence/t5-rolling-pods.txt
+== RollingUpdate
+Total requests       : 129
+Failed requests      : 0
+First / last FAIL    : none
+  1.0.0                77   first 2026-10-13T10:53:48Z   last 2026-10-13T10:55:12Z
+  1.1.0                52   first 2026-10-13T10:54:26Z   last 2026-10-13T10:55:29Z
+Mixed-version window : 46 s (1.0.0 and 1.1.0 both observed)
+# peak: 5 notice-board Pods listed | quota used at peak: 6 Pods, requests.cpu 260m of 1000m, requests.memory 336Mi of 1024Mi
+
