@@ -1,0 +1,15 @@
+# manifests/bluegreen/01-configmap-flags.yaml
+# Purpose : feature-flag ConfigMap read by the green Deployment (Task 8).
+# Apply   : kubectl apply -f manifests/bluegreen/01-configmap-flags.yaml
+# Task 8.2 edits the value below from "false" to "true" and applies the file again.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notice-board-flags
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+data:
+  # ConfigMap values are strings, so the boolean is quoted. "false" = notices keep their
+  # stored order and the API answers "pinnedFirst": false.
+  FEATURE_PINNED: "false"

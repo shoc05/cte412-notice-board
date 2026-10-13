@@ -1,0 +1,19 @@
+# manifests/base/00-namespace.yaml
+# Purpose : namespace nb-<sid> that holds every object of this lab.
+# Apply   : kubectl apply -f manifests/base/00-namespace.yaml
+# Before applying, replace YOUR FULL NAME below with your full name (Task 1.2).
+apiVersion: v1
+kind: Namespace
+metadata:
+  # Namespace name carries the student number <sid> (course rule: Identity).
+  name: nb-02230146
+  labels:
+    # Required label (Task 1.2): groups every object under the application.
+    app.kubernetes.io/part-of: campus-notice-board
+    # Required label (Task 1.2): the sheet numbers this practical "06"; quoted so it stays a string.
+    cte412/practical: "06"
+  annotations:
+    # Required annotation (Task 1.2): records who owns the namespace.
+    cte412/student-name: "Sangay Tshokyee Tshering"
+    # Student number again, so that `kubectl describe namespace` shows <sid> in the evidence.
+    cte412/student-id: "02230146"

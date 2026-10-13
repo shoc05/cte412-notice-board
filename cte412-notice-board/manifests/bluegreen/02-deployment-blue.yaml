@@ -1,0 +1,73 @@
+# manifests/bluegreen/02-deployment-blue.yaml
+# Purpose : blue slot of the blue/green release (Task 7): 3 replicas of 1.0.0.
+# Apply   : kubectl apply -f manifests/bluegreen/02-deployment-blue.yaml
+# Same probes and resources as manifests/rolling/01-deployment.yaml (Task 7.1).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notice-board-blue
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+    slot: blue
+  annotations:
+    # Shown by `kubectl rollout history deployment/notice-board-blue`.
+    kubernetes.io/change-cause: "task 7: blue slot runs 1.0.0"
+spec:
+  replicas: 3
+  # Not needed for the colour switch (that is a Service change) but kept so that any later
+  # edit of this Deployment also rolls with zero unavailable Pods.
+  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 0, maxSurge: 1}}
+  # A new Pod must stay Ready for 5 s before it counts as available.
+  minReadySeconds: 5
+  # A rollout that makes no progress for 60 s is marked failed (same value as Task 6.1).
+  progressDeadlineSeconds: 60
+  selector:
+    matchLabels:
+      app: notice-board
+      # slot keeps blue and green Pods apart: each Deployment owns only its own Pods.
+      slot: blue
+  template:
+    metadata:
+      labels:
+        app: notice-board
+        version: "1.0.0"
+        # Required Pod label (Task 7.1); the Services select on it.
+        slot: blue
+    spec:
+      containers:
+        - name: notice-board
+          # Baseline image from Task 2.
+          image: notice-board:02230146-1.0.0
+          # Never: no registry pull, ever (course rule: No registry).
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8080
+          securityContext:
+            # Refuse to start as root (the image runs as UID 10001).
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          # Identical to Task 3; see manifests/rolling/01-deployment.yaml for the quota arithmetic.
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 150m
+              memory: 128Mi
+          # /healthz: traffic only after the 5 s warm-up.
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 2
+          # TCP check, not /healthz: a restart must not be triggered by warm-up or by "not ready".
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3

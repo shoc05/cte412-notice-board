@@ -1,0 +1,84 @@
+# manifests/rolling/01-deployment.yaml
+# Purpose : notice-board Deployment for the single-Deployment releases (Tasks 3, 5, 6).
+#           It starts at 1.0.0 and is edited in place for every release.
+# Apply   : kubectl apply -f manifests/rolling/01-deployment.yaml
+# Edited per release (declarative changes only): kubernetes.io/change-cause, strategy,
+#           minReadySeconds, progressDeadlineSeconds, the version label and the image tag.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notice-board
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+  annotations:
+    # Shown by `kubectl rollout history`. Rewritten with every release because the
+    # imperative `kubectl annotate` is not allowed in this lab.
+    kubernetes.io/change-cause: "task 3: deploy 1.0.0"
+spec:
+  # 3 replicas (Task 3.1). With maxSurge 1 a rollout peaks at 4 Pods, which the quota allows.
+  replicas: 3
+  # Task 3 uses the Kubernetes default values, written out on purpose: with `kubectl apply`,
+  # a field that was never in the file is not removed later, and Task 5.1 (Recreate) would be
+  # rejected with "rollingUpdate: Forbidden". Task 5 rewrites this one line.
+  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 25%, maxSurge: 25%}}
+  # Default 0: a new Pod counts as available as soon as it is Ready. Task 5.3 raises it to 5.
+  minReadySeconds: 0
+  # Default 600 s: Task 6.1 lowers it to 60 so a stuck rollout is marked failed after one minute.
+  progressDeadlineSeconds: 600
+  selector:
+    matchLabels:
+      # Matches every version, so old and new Pods sit behind the Service together during a rollout.
+      app: notice-board
+  template:
+    metadata:
+      labels:
+        app: notice-board
+        # Image version (Task 3.1); edited together with the image tag below.
+        version: "1.0.0"
+    spec:
+      containers:
+        - name: notice-board
+          # <sid>-<version> tag built in Task 2 and loaded into the nodes with `kind load`.
+          image: notice-board:02230146-1.0.0
+          # Never: the kubelet may only use the image already on the node and can never
+          # attempt a registry pull (Task 3.4, course rule: No registry).
+          imagePullPolicy: Never
+          ports:
+            # Named port: the Services refer to `http`, not to 8080.
+            - name: http
+              containerPort: 8080
+          securityContext:
+            # The image runs as UID 10001; this makes Kubernetes refuse to start it as root.
+            runAsNonRoot: true
+            # No process in the container may gain more privileges than it started with.
+            allowPrivilegeEscalation: false
+          # Quota fit (Task 3.2): peak is 7 notice-board Pods in Tasks 7-8 plus up to 2 draining:
+          # 9 x 50m = 450m of requests.cpu 1; 9 x 64Mi = 576Mi of requests.memory 1Gi;
+          # 9 x 150m = 1350m of limits.cpu 2; 9 x 128Mi = 1152Mi of limits.memory 2Gi.
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 150m
+              memory: 128Mi
+          # Readiness uses /healthz: the Pod receives traffic only after the 5 s warm-up is
+          # over, and the broken release (never 200) is never added to the Service endpoints.
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 2
+          # Liveness deliberately does NOT use /healthz: that endpoint is 503 during warm-up
+          # and for ever in 1.2.0-broken, so using it would make the kubelet kill containers
+          # that are merely starting or not ready. A TCP check only asks "is the process
+          # still accepting connections?", which is the one thing a restart can fix.
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3

@@ -1,0 +1,27 @@
+# cluster/kind-cluster.yaml
+# Purpose : kind cluster for the CTE412 assessed lab - one control-plane node and two
+#           worker nodes. Host port 30090 (127.0.0.1 only) reaches NodePort 30090.
+# Apply   : kind create cluster --config cluster/kind-cluster.yaml
+# Delete  : kind delete cluster --name cte412-02230146
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+# Cluster name carries the student number <sid> (course rule: Identity).
+# The kubectl context is therefore kind-cte412-02230146.
+name: cte412-02230146
+nodes:
+  - role: control-plane
+    # No `image:` line, so kind uses the default node image of the installed kind
+    # version. To reuse an image already downloaded in an earlier practical, add
+    #   image: kindest/node:v1.36.1
+    extraPortMappings:
+      # Publishes NodePort 30090 of the control-plane container on the host.
+      # The Service notice-board-ext (NodePort 30090) is then reachable with
+      # `curl http://localhost:30090` and no kubectl port-forward.
+      - containerPort: 30090
+        hostPort: 30090
+        # 127.0.0.1 only: the notice board must not be reachable from the LAN.
+        listenAddress: "127.0.0.1"
+        protocol: TCP
+  # Two workers: the scheduler spreads the replicas across them.
+  - role: worker
+  - role: worker

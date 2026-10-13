@@ -1,0 +1,47 @@
+# manifests/rolling/02-services.yaml
+# Purpose : the two Services in front of the single notice-board Deployment (Task 3.5):
+#           notice-board (ClusterIP, used by the monitor) and notice-board-ext
+#           (NodePort 30090, used from the host).
+# Apply   : kubectl apply -f manifests/rolling/02-services.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+spec:
+  # ClusterIP is the default type; stated for clarity.
+  type: ClusterIP
+  selector:
+    # No version in the selector: old and new Pods are served together during a rollout.
+    app: notice-board
+  ports:
+    - name: http
+      protocol: TCP
+      # Port 80 on the Service (Task 3.5) ...
+      port: 80
+      # ... forwarded to the container port NAMED http (8080), not to a number.
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board-ext
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+spec:
+  # NodePort: opens the same port on every node so the host can reach the API.
+  type: NodePort
+  selector:
+    app: notice-board
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+      # Fixed at 30090 because cluster/kind-cluster.yaml publishes exactly this port
+      # from the control-plane container to 127.0.0.1 on the host (Task 1.1).
+      nodePort: 30090

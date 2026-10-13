@@ -1,0 +1,65 @@
+# manifests/bluegreen/04-services.yaml
+# Purpose : production Services (notice-board, notice-board-ext) that send traffic to ONE
+#           colour, and notice-board-preview that always sends traffic to green (Task 7.2).
+#           The colour switch of Task 7.4 is a one-line edit of the two PROD-SLOT lines.
+# Apply   : kubectl apply -f manifests/bluegreen/04-services.yaml
+# These Services replace the ones in manifests/rolling/02-services.yaml (same names).
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+spec:
+  type: ClusterIP
+  selector:
+    app: notice-board
+    slot: blue   # PROD-SLOT production colour; edited blue <-> green to switch all production traffic
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      # The container port NAMED http (8080).
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board-ext
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+spec:
+  type: NodePort
+  selector:
+    app: notice-board
+    slot: blue   # PROD-SLOT must always equal the colour of the Service above, so host and cluster clients see the same release
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http
+      # Published to 127.0.0.1:30090 on the host by cluster/kind-cluster.yaml.
+      nodePort: 30090
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notice-board-preview
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+spec:
+  type: ClusterIP
+  selector:
+    app: notice-board
+    # Always green: the candidate release can be verified from inside the cluster
+    # while production still serves blue (Task 7.3). Never edited.
+    slot: green
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: http

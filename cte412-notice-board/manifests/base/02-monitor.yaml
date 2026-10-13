@@ -1,0 +1,42 @@
+# manifests/base/02-monitor.yaml
+# Purpose : availability monitor - the measuring instrument for Tasks 5 to 8. It
+#           requests http://notice-board/version every 0.5 s forever and prints one
+#           line per request:  <ISO-8601 UTC timestamp> <OK|FAIL> <body or error>
+# Apply   : kubectl apply -f manifests/base/02-monitor.yaml
+# Read    : kubectl logs monitor            (never delete or restart this Pod between measurements)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: monitor
+  namespace: nb-02230146
+  labels:
+    # Not app=notice-board, so no Service or Deployment ever selects the monitor.
+    app: availability-monitor
+spec:
+  # Always is the default; the loop below never exits, so the Pod is never restarted.
+  containers:
+    - name: monitor
+      # busybox: allowed base image (Alpine or busybox only); has wget, date and sleep 0.5.
+      image: busybox:1.37
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          while true; do
+            ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            # -T 2: a request that hangs is logged as FAIL after 2 s instead of blocking the loop.
+            if out=$(wget -q -T 2 -O - http://notice-board/version 2>&1); then
+              echo "$ts OK $out"
+            else
+              echo "$ts FAIL $(echo "$out" | tr '\n' ' ')"
+            fi
+            sleep 0.5
+          done
+      # Declared explicitly: the quota makes requests and limits mandatory. Values sit at
+      # the LimitRange minimum (10m / 16Mi) because the loop is almost idle.
+      resources:
+        requests:
+          cpu: 10m
+          memory: 16Mi
+        limits:
+          cpu: 50m
+          memory: 32Mi

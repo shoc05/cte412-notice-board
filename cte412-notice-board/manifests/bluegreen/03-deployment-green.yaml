@@ -1,0 +1,88 @@
+# manifests/bluegreen/03-deployment-green.yaml
+# Purpose : green slot of the blue/green release (Tasks 7 and 8): 3 replicas of 1.1.0.
+#           Task 8 makes it read FEATURE_PINNED from the ConfigMap notice-board-flags.
+# Apply   : kubectl apply -f manifests/bluegreen/03-deployment-green.yaml
+# Same probes and resources as manifests/rolling/01-deployment.yaml (Task 7.1).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notice-board-green
+  namespace: nb-02230146
+  labels:
+    app: notice-board
+    slot: green
+  annotations:
+    # Shown by `kubectl rollout history deployment/notice-board-green`.
+    kubernetes.io/change-cause: "task 7: green slot runs 1.1.0"
+spec:
+  replicas: 3
+  # Task 8.3 relies on this: changing the Pod template rolls the green Pods one at a time,
+  # never fewer than 3 available (maxUnavailable 0), one extra Pod at a time (maxSurge 1).
+  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 0, maxSurge: 1}}
+  # A new Pod must stay Ready for 5 s before it counts as available.
+  minReadySeconds: 5
+  # A rollout that makes no progress for 60 s is marked failed (same value as Task 6.1).
+  progressDeadlineSeconds: 60
+  selector:
+    matchLabels:
+      app: notice-board
+      # slot keeps blue and green Pods apart: each Deployment owns only its own Pods.
+      slot: green
+  template:
+    metadata:
+      labels:
+        app: notice-board
+        version: "1.1.0"
+        # Required Pod label (Task 7.1); the preview Service always selects green.
+        slot: green
+      annotations:
+        # Task 8.3: environment variables are read only when a container starts, so a changed
+        # ConfigMap does not reach running Pods. Changing this value changes the Pod template,
+        # which makes the Deployment replace the Pods (declaratively, with zero failed requests).
+        cte412/flags-revision: "1"
+    spec:
+      containers:
+        - name: notice-board
+          # 1.1.0 adds category and pinned notices; pinned-first is behind FEATURE_PINNED.
+          image: notice-board:02230146-1.1.0
+          # Never: no registry pull, ever (course rule: No registry).
+          imagePullPolicy: Never
+          # Task 8.1: the six lines below are commented out during Task 7. The runbook removes
+          # the leading marker from them (one sed command) so the green Pods read the flag from
+          # the ConfigMap. optional is not set: if the ConfigMap is missing the Pod must fail loudly.
+          #FLAG# env:
+          #FLAG#   - name: FEATURE_PINNED
+          #FLAG#     valueFrom:
+          #FLAG#       configMapKeyRef:
+          #FLAG#         name: notice-board-flags
+          #FLAG#         key: FEATURE_PINNED
+          ports:
+            - name: http
+              containerPort: 8080
+          securityContext:
+            # Refuse to start as root (the image runs as UID 10001).
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          # Identical to Task 3; see manifests/rolling/01-deployment.yaml for the quota arithmetic.
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 150m
+              memory: 128Mi
+          # /healthz: traffic only after the 5 s warm-up.
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 2
+          # TCP check, not /healthz: a restart must not be triggered by warm-up or by "not ready".
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
