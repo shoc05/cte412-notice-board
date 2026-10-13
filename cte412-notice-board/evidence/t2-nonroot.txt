@@ -1,0 +1,5 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:28:10Z
+$ docker exec nb100 id; docker image inspect notice-board:$SID-1.0.0 --format "User={{.Config.User}}"
+uid=10001(app) gid=101(app) groups=101(app)
+User=10001
+

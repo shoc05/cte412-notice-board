@@ -1,0 +1,4 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:18:17Z
+$ kubectl config view --minify -o jsonpath='{..namespace}'; echo
+nb-02230146
+

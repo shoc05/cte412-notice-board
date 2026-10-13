@@ -1,0 +1,7 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:22:55Z
+$ docker image ls notice-board
+IMAGE                                ID             DISK USAGE   CONTENT SIZE   EXTRA
+notice-board:02230146-1.0.0          2334f58ff029       78.8MB         19.5MB        
+notice-board:02230146-1.1.0          f0e0f5a9791c       78.8MB         19.5MB        
+notice-board:02230146-1.2.0-broken   fd3d49af818c       78.8MB         19.5MB        
+

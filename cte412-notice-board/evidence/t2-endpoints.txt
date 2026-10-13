@@ -1,0 +1,32 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:27:00Z
+$ for p in 18080 18081 18082
+
+do curl -s -o /dev/null -w "port $p healthz at start: %{http_code}\n" localhost:$p/healthz; done
+port 18080 healthz at start: 200
+port 18081 healthz at start: 200
+port 18082 healthz at start: 503
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:27:28Z
+$ for p in 18080 18081 18082; do curl -s -w "  [%{http_code}]\n" localhost:$p/healthz; done
+{"status": "ok"}  [200]
+{"status": "ok"}  [200]
+{"status": "unhealthy"}  [503]
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:27:35Z
+$ curl -s localhost:18080/version; echo; curl -s localhost:18080/notices; echo
+{"version": "1.0.0", "student": "02230146", "pod": "aee7ec0db478"}
+{"notices": [{"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period."}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE."}, {"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month."}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday."}]}
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:27:48Z
+$ curl -s localhost:18080/version; echo; curl -s localhost:18080/notices; echo
+
+echo
+{"version": "1.0.0", "student": "02230146", "pod": "aee7ec0db478"}
+{"notices": [{"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period."}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE."}, {"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month."}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday."}]}
+
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:27:57Z
+$ curl -s localhost:18081/notices; echo; curl -s localhost:18082/version; echo
+{"pinnedFirst": true, "notices": [{"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month.", "category": "hostel", "pinned": true}, {"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period.", "category": "library", "pinned": false}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE.", "category": "academic", "pinned": false}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday.", "category": "events", "pinned": false}]}
+{"version": "1.2.0-broken", "student": "02230146", "pod": "a8334ef54d91"}
+

@@ -1,0 +1,21 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T10:18:19Z
+$ for i in $(seq 1 12); do curl -s http://localhost:30090/version; echo; done
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vbb97"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vbb97"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-nxsv6"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vh9sk"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-nxsv6"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vbb97"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vbb97"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vh9sk"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vbb97"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vh9sk"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vbb97"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-7886db58ff-vh9sk"}
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T10:18:26Z
+$ for i in $(seq 1 30); do curl -s http://localhost:30090/version; echo; done | grep -o "\"pod\": \"[^\"]*\"" | sort | uniq -c
+     14 "pod": "notice-board-7886db58ff-nxsv6"
+      8 "pod": "notice-board-7886db58ff-vbb97"
+      8 "pod": "notice-board-7886db58ff-vh9sk"
+

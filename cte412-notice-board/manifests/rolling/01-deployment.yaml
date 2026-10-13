@@ -14,14 +14,14 @@ metadata:
   annotations:
     # Shown by `kubectl rollout history`. Rewritten with every release because the
     # imperative `kubectl annotate` is not allowed in this lab.
-    kubernetes.io/change-cause: "task 3: deploy 1.0.0"
+    kubernetes.io/change-cause: "task 5.1: release 1.1.0 with Recreate"
 spec:
   # 3 replicas (Task 3.1). With maxSurge 1 a rollout peaks at 4 Pods, which the quota allows.
   replicas: 3
   # Task 3 uses the Kubernetes default values, written out on purpose: with `kubectl apply`,
   # a field that was never in the file is not removed later, and Task 5.1 (Recreate) would be
   # rejected with "rollingUpdate: Forbidden". Task 5 rewrites this one line.
-  strategy: {type: RollingUpdate, rollingUpdate: {maxUnavailable: 25%, maxSurge: 25%}}
+  strategy: {type: Recreate}   # task 5.1: stop every old Pod, then start the new ones (downtime accepted for this measurement)
   # Default 0: a new Pod counts as available as soon as it is Ready. Task 5.3 raises it to 5.
   minReadySeconds: 0
   # Default 600 s: Task 6.1 lowers it to 60 so a stuck rollout is marked failed after one minute.
@@ -35,12 +35,12 @@ spec:
       labels:
         app: notice-board
         # Image version (Task 3.1); edited together with the image tag below.
-        version: "1.0.0"
+        version: "1.1.0"
     spec:
       containers:
         - name: notice-board
           # <sid>-<version> tag built in Task 2 and loaded into the nodes with `kind load`.
-          image: notice-board:02230146-1.0.0
+          image: notice-board:02230146-1.1.0
           # Never: the kubelet may only use the image already on the node and can never
           # attempt a registry pull (Task 3.4, course rule: No registry).
           imagePullPolicy: Never

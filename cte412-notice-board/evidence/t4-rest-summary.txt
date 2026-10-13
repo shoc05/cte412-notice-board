@@ -1,0 +1,4 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T10:23:55Z
+$ scripts/summarise.sh evidence/t4-rest-monitor.txt
+no monitor lines found
+

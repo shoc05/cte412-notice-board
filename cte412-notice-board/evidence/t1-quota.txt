@@ -1,0 +1,19 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:18:03Z
+$ kubectl describe resourcequota nb-quota; kubectl describe limitrange nb-limits
+Name:            nb-quota
+Namespace:       nb-02230146
+Resource         Used  Hard
+--------         ----  ----
+count/services   0     4
+limits.cpu       0     2
+limits.memory    0     2Gi
+pods             0     15
+requests.cpu     0     1
+requests.memory  0     1Gi
+Name:       nb-limits
+Namespace:  nb-02230146
+Type        Resource  Min   Max    Default Request  Default Limit  Max Limit/Request Ratio
+----        --------  ---   ---    ---------------  -------------  -----------------------
+Container   cpu       10m   500m   50m              150m           -
+Container   memory    16Mi  256Mi  64Mi             128Mi          -
+

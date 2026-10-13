@@ -1,0 +1,32 @@
+# sid=02230146 context= namespace=nb-02230146 time=2026-10-13T08:57:03Z
+$ kind get clusters; kubectl config current-context; kubectl get nodes -o wide
+-sh: eval: kind: not found
+-sh: eval: kubectl: not found
+-sh: eval: kubectl: not found
+
+# sid=02230146 context= namespace=nb-02230146 time=2026-10-13T08:58:01Z
+$ kind get clusters; kubectl config current-context; kubectl get nodes -o wide
+-sh: eval: kind: not found
+-sh: eval: kubectl: not found
+-sh: eval: kubectl: not found
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:14:43Z
+$ kind get clusters; kubectl config current-context; kubectl get nodes -o wide
+cte412-02230146
+dso202
+kind-cte412-02230146
+NAME                            STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION                             CONTAINER-RUNTIME
+cte412-02230146-control-plane   Ready    control-plane   22m   v1.37.0   172.20.0.5    <none>        Debian GNU/Linux 13 (trixie)   6.6.87.2-microsoft-standard-WSL2 (amd64)   containerd://2.3.4
+cte412-02230146-worker          Ready    <none>          22m   v1.37.0   172.20.0.7    <none>        Debian GNU/Linux 13 (trixie)   6.6.87.2-microsoft-standard-WSL2 (amd64)   containerd://2.3.4
+cte412-02230146-worker2         Ready    <none>          22m   v1.37.0   172.20.0.6    <none>        Debian GNU/Linux 13 (trixie)   6.6.87.2-microsoft-standard-WSL2 (amd64)   containerd://2.3.4
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:15:18Z
+$ docker ps --format "table {{.Names}}\t{{.Ports}}"
+NAMES                           PORTS
+cte412-02230146-control-plane   127.0.0.1:30090->30090/tcp, 127.0.0.1:64442->6443/tcp
+cte412-02230146-worker2         
+cte412-02230146-worker          
+dso202-control-plane            127.0.0.1:30080->30080/tcp, 127.0.0.1:59863->6443/tcp
+dso202-worker2                  
+dso202-worker                   
+

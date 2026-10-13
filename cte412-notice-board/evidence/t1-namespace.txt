@@ -1,0 +1,29 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T09:17:37Z
+$ kubectl get namespace nb-02230146 --show-labels; kubectl describe namespace nb-02230146
+NAME          STATUS   AGE   LABELS
+nb-02230146   Active   19m   app.kubernetes.io/part-of=campus-notice-board,cte412/practical=06,kubernetes.io/metadata.name=nb-02230146
+Name:         nb-02230146
+Labels:       app.kubernetes.io/part-of=campus-notice-board
+              cte412/practical=06
+              kubernetes.io/metadata.name=nb-02230146
+Annotations:  cte412/student-id: 02230146
+              cte412/student-name: Sangay Tshokyee Tshering
+Status:       Active
+
+Resource Quotas
+  Name:            nb-quota
+  Resource         Used  Hard
+  --------         ---   ---
+  count/services   0     4
+  limits.cpu       0     2
+  limits.memory    0     2Gi
+  pods             0     15
+  requests.cpu     0     1
+  requests.memory  0     1Gi
+
+Resource Limits
+ Type       Resource  Min   Max    Default Request  Default Limit  Max Limit/Request Ratio
+ ----       --------  ---   ---    ---------------  -------------  -----------------------
+ Container  cpu       10m   500m   50m              150m           -
+ Container  memory    16Mi  256Mi  64Mi             128Mi          -
+
