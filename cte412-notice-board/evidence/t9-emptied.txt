@@ -1,0 +1,10 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T16:05:49Z
+$ kubectl get all,configmap; kubectl get resourcequota,limitrange
+NAME                         DATA   AGE
+configmap/kube-root-ca.crt   1      31h
+NAME                     REQUEST                                                                      LIMIT                                   AGE
+resourcequota/nb-quota   count/services: 0/4, pods: 0/15, requests.cpu: 0/1, requests.memory: 0/1Gi   limits.cpu: 0/2, limits.memory: 0/2Gi   31h
+
+NAME                   CREATED AT
+limitrange/nb-limits   2026-10-13T08:58:40Z
+

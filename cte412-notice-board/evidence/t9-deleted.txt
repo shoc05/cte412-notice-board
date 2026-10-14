@@ -1,0 +1,6 @@
+# sid=02230146 context= namespace=nb-02230146 time=2026-10-14T16:06:53Z
+$ kind get clusters; kubectl config get-contexts
+dso202
+CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
+          kind-dso202   kind-dso202   kind-dso202   
+

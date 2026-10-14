@@ -1,0 +1,13 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T16:04:51Z
+$ scripts/summarise.sh evidence/t9-monitor-full.log
+Total requests       : 38139
+Failed requests      : 35
+First timestamp      : 2026-10-13T10:22:36Z
+Last timestamp       : 2026-10-14T16:04:49Z
+Duration             : 106933 s
+First / last FAIL    : 2026-10-13T10:49:12Z / 2026-10-14T15:18:37Z (102565 s apart)
+Responses per version:
+  1.0.0              2828   first 2026-10-13T10:22:36Z   last 2026-10-14T15:26:56Z
+  1.1.0             35276   first 2026-10-13T10:49:34Z   last 2026-10-14T16:04:49Z
+Mixed-version window : 103042 s (1.0.0 and 1.1.0 both observed)
+

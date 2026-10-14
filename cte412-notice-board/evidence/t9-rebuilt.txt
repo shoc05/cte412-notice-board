@@ -1,0 +1,25 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T16:06:28Z
+$ kubectl get deploy,svc,pods -o wide -L slot,version
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS     IMAGES                        SELECTOR                      SLOT    VERSION
+deployment.apps/notice-board-blue    3/3     3            3           28s   notice-board   notice-board:02230146-1.0.0   app=notice-board,slot=blue    blue    
+deployment.apps/notice-board-green   3/3     3            3           28s   notice-board   notice-board:02230146-1.1.0   app=notice-board,slot=green   green   
+
+NAME                           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE   SELECTOR                      SLOT   VERSION
+service/notice-board           ClusterIP   10.96.22.245   <none>        80/TCP         28s   app=notice-board,slot=green          
+service/notice-board-ext       NodePort    10.96.108.88   <none>        80:30090/TCP   27s   app=notice-board,slot=green          
+service/notice-board-preview   ClusterIP   10.96.212.92   <none>        80/TCP         27s   app=notice-board,slot=green          
+
+NAME                                      READY   STATUS    RESTARTS   AGE   IP            NODE                      NOMINATED NODE   READINESS GATES   SLOT    VERSION
+pod/monitor                               1/1     Running   0          29s   10.244.1.18   cte412-02230146-worker2   <none>           <none>                    
+pod/notice-board-blue-6ffc99945c-db42d    1/1     Running   0          28s   10.244.2.12   cte412-02230146-worker    <none>           <none>            blue    1.0.0
+pod/notice-board-blue-6ffc99945c-qprvr    1/1     Running   0          28s   10.244.1.19   cte412-02230146-worker2   <none>           <none>            blue    1.0.0
+pod/notice-board-blue-6ffc99945c-xg9qx    1/1     Running   0          28s   10.244.1.20   cte412-02230146-worker2   <none>           <none>            blue    1.0.0
+pod/notice-board-green-75d64b669f-252np   1/1     Running   0          27s   10.244.2.14   cte412-02230146-worker    <none>           <none>            green   1.1.0
+pod/notice-board-green-75d64b669f-b84rf   1/1     Running   0          27s   10.244.1.21   cte412-02230146-worker2   <none>           <none>            green   1.1.0
+pod/notice-board-green-75d64b669f-hqbbn   1/1     Running   0          27s   10.244.2.13   cte412-02230146-worker    <none>           <none>            green   1.1.0
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T16:06:29Z
+$ curl -s http://localhost:30090/version; echo; curl -s http://localhost:30090/notices; echo
+{"version": "1.1.0", "student": "02230146", "pod": "notice-board-green-75d64b669f-hqbbn"}
+{"pinnedFirst": true, "notices": [{"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month.", "category": "hostel", "pinned": true}, {"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period.", "category": "library", "pinned": false}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE.", "category": "academic", "pinned": false}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday.", "category": "events", "pinned": false}]}
+
