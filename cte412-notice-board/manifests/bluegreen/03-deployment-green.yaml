@@ -13,7 +13,7 @@ metadata:
     slot: green
   annotations:
     # Shown by `kubectl rollout history deployment/notice-board-green`.
-    kubernetes.io/change-cause: "task 7: green slot runs 1.1.0"
+    kubernetes.io/change-cause: "task 8.1: green reads FEATURE_PINNED from notice-board-flags"
 spec:
   replicas: 3
   # Task 8.3 relies on this: changing the Pod template rolls the green Pods one at a time,
@@ -39,7 +39,7 @@ spec:
         # Task 8.3: environment variables are read only when a container starts, so a changed
         # ConfigMap does not reach running Pods. Changing this value changes the Pod template,
         # which makes the Deployment replace the Pods (declaratively, with zero failed requests).
-        cte412/flags-revision: "1"
+        cte412/flags-revision: "2"
     spec:
       containers:
         - name: notice-board
@@ -50,12 +50,12 @@ spec:
           # Task 8.1: the six lines below are commented out during Task 7. The runbook removes
           # the leading marker from them (one sed command) so the green Pods read the flag from
           # the ConfigMap. optional is not set: if the ConfigMap is missing the Pod must fail loudly.
-          #FLAG# env:
-          #FLAG#   - name: FEATURE_PINNED
-          #FLAG#     valueFrom:
-          #FLAG#       configMapKeyRef:
-          #FLAG#         name: notice-board-flags
-          #FLAG#         key: FEATURE_PINNED
+          env:
+            - name: FEATURE_PINNED
+              valueFrom:
+                configMapKeyRef:
+                  name: notice-board-flags
+                  key: FEATURE_PINNED
           ports:
             - name: http
               containerPort: 8080

@@ -1,0 +1,15 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:31:41Z
+$ kubectl exec deploy/notice-board-green -- printenv FEATURE_PINNED; curl -s http://localhost:30090/notices; echo
+command terminated with exit code 1
+{"pinnedFirst": false, "notices": [{"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period.", "category": "library", "pinned": false}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE.", "category": "academic", "pinned": false}, {"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month.", "category": "hostel", "pinned": true}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday.", "category": "events", "pinned": false}]}
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:33:38Z
+$ kubectl exec deploy/notice-board-green -- printenv FEATURE_PINNED; curl -s http://localhost:30090/notices; echo
+false
+{"pinnedFirst": false, "notices": [{"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period.", "category": "library", "pinned": false}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE.", "category": "academic", "pinned": false}, {"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month.", "category": "hostel", "pinned": true}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday.", "category": "events", "pinned": false}]}
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T16:00:14Z
+$ kubectl exec deploy/notice-board-green -- printenv FEATURE_PINNED; curl -s http://localhost:30090/notices; echo
+true
+{"pinnedFirst": true, "notices": [{"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month.", "category": "hostel", "pinned": true}, {"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period.", "category": "library", "pinned": false}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE.", "category": "academic", "pinned": false}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday.", "category": "events", "pinned": false}]}
+

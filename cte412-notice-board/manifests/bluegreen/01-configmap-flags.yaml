@@ -12,4 +12,4 @@ metadata:
 data:
   # ConfigMap values are strings, so the boolean is quoted. "false" = notices keep their
   # stored order and the API answers "pinnedFirst": false.
-  FEATURE_PINNED: "false"
+  FEATURE_PINNED: "true"   # task 8.2: pinned notices first
