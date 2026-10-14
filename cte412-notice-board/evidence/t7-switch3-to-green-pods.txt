@@ -1,0 +1,13 @@
+# sid=02230146 namespace=nb-02230146 columns: time pods-listed quota-pods quota-requests.cpu quota-requests.memory
+2026-10-14T15:26:56Z 6 7 310m 400Mi
+2026-10-14T15:26:58Z 6 7 310m 400Mi
+2026-10-14T15:27:01Z 6 7 310m 400Mi
+2026-10-14T15:27:03Z 6 7 310m 400Mi
+2026-10-14T15:27:06Z 6 7 310m 400Mi
+2026-10-14T15:27:08Z 6 7 310m 400Mi
+2026-10-14T15:27:10Z 6 7 310m 400Mi
+2026-10-14T15:27:13Z 6 7 310m 400Mi
+2026-10-14T15:27:15Z 6 7 310m 400Mi
+2026-10-14T15:27:17Z 6 7 310m 400Mi
+2026-10-14T15:27:20Z 6 7 310m 400Mi
+# peak: 6 notice-board Pods listed | quota used at peak: 7 Pods, requests.cpu 310m of 1000m, requests.memory 400Mi of 1024Mi

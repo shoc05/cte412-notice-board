@@ -1,0 +1,13 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:27:25Z
+$ scripts/summarise.sh evidence/t7-switch3-to-green-monitor.txt
+Total requests       : 52
+Failed requests      : 0
+First timestamp      : 2026-10-14T15:26:40Z
+Last timestamp       : 2026-10-14T15:27:23Z
+Duration             : 43 s
+First / last FAIL    : none
+Responses per version:
+  1.0.0                21   first 2026-10-14T15:26:40Z   last 2026-10-14T15:26:56Z
+  1.1.0                31   first 2026-10-14T15:26:58Z   last 2026-10-14T15:27:23Z
+Mixed-version window : 0 s (1.0.0 and 1.1.0 both observed)
+
