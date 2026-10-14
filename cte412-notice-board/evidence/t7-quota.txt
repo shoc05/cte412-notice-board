@@ -1,0 +1,13 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:25:11Z
+$ kubectl describe resourcequota nb-quota
+Name:            nb-quota
+Namespace:       nb-02230146
+Resource         Used   Hard
+--------         ----   ----
+count/services   3      4
+limits.cpu       950m   2
+limits.memory    800Mi  2Gi
+pods             7      15
+requests.cpu     310m   1
+requests.memory  400Mi  1Gi
+

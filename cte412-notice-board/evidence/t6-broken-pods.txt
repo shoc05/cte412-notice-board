@@ -1,0 +1,1 @@
+# sid=02230146 namespace=nb-02230146 columns: time pods-listed quota-pods quota-requests.cpu quota-requests.memory

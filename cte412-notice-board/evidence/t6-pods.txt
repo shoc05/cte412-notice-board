@@ -1,0 +1,8 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T11:06:52Z
+$ kubectl get pods -l app=notice-board -o wide -L version
+NAME                            READY   STATUS    RESTARTS   AGE   IP            NODE                      NOMINATED NODE   READINESS GATES   VERSION
+notice-board-79df96cf9f-x49gp   0/1     Running   0          78s   10.244.2.6    cte412-02230146-worker    <none>           <none>            1.2.0-broken
+notice-board-f4757554f-jm2bv    1/1     Running   0          12m   10.244.1.10   cte412-02230146-worker2   <none>           <none>            1.1.0
+notice-board-f4757554f-l9jjw    1/1     Running   0          12m   10.244.1.9    cte412-02230146-worker2   <none>           <none>            1.1.0
+notice-board-f4757554f-skhhf    1/1     Running   0          12m   10.244.2.5    cte412-02230146-worker    <none>           <none>            1.1.0
+

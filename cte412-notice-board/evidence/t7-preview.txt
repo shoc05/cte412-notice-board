@@ -1,0 +1,16 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:25:23Z
+$ for i in 1 2 3; do kubectl exec monitor -- wget -qO- http://notice-board-preview/version; echo; done
+{"version": "1.1.0", "student": "02230146", "pod": "notice-board-green-785b5cdbfc-q72fc"}
+{"version": "1.1.0", "student": "02230146", "pod": "notice-board-green-785b5cdbfc-7x9hf"}
+{"version": "1.1.0", "student": "02230146", "pod": "notice-board-green-785b5cdbfc-7x9hf"}
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:25:34Z
+$ for i in 1 2 3; do kubectl exec monitor -- wget -qO- http://notice-board/version; echo; done
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-blue-6ffc99945c-lvv5l"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-blue-6ffc99945c-khq2c"}
+{"version": "1.0.0", "student": "02230146", "pod": "notice-board-blue-6ffc99945c-k2pf2"}
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:25:42Z
+$ kubectl exec monitor -- wget -qO- http://notice-board-preview/notices; echo
+{"pinnedFirst": false, "notices": [{"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period.", "category": "library", "pinned": false}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE.", "category": "academic", "pinned": false}, {"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month.", "category": "hostel", "pinned": true}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday.", "category": "events", "pinned": false}]}
+

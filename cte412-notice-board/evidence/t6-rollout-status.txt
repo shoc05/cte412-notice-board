@@ -1,0 +1,5 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-13T11:06:31Z
+$ kubectl rollout status deployment/notice-board --timeout=120s
+Waiting for deployment "notice-board" rollout to finish: 1 out of 3 new replicas have been updated...
+error: deployment "notice-board" exceeded its progress deadline
+
