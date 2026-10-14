@@ -13,7 +13,7 @@ metadata:
     slot: green
   annotations:
     # Shown by `kubectl rollout history deployment/notice-board-green`.
-    kubernetes.io/change-cause: "task 8.1: green reads FEATURE_PINNED from notice-board-flags"
+    kubernetes.io/change-cause: "task 8.3: flags-revision 2 restarts green with FEATURE_PINNED=true"
 spec:
   replicas: 3
   # Task 8.3 relies on this: changing the Pod template rolls the green Pods one at a time,

@@ -1,0 +1,10 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T16:04:12Z
+$ for p in $(kubectl get pods -l slot=green -o name); do echo "$p FEATURE_PINNED=$(kubectl exec ${p#pod/} -- printenv FEATURE_PINNED)"; done
+pod/notice-board-green-75d64b669f-57vxv FEATURE_PINNED=true
+pod/notice-board-green-75d64b669f-7tt2d FEATURE_PINNED=true
+pod/notice-board-green-75d64b669f-gqdfg FEATURE_PINNED=true
+
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T16:04:16Z
+$ curl -s http://localhost:30090/notices; echo
+{"pinnedFirst": true, "notices": [{"id": 3, "title": "Hostel fee payment deadline", "body": "Hostel fees must be paid to the Finance Office by the end of this month.", "category": "hostel", "pinned": true}, {"id": 1, "title": "Library opening hours extended", "body": "The library stays open until 22:00 on weekdays during the exam period.", "category": "library", "pinned": false}, {"id": 2, "title": "Mid-semester examination timetable published", "body": "Timetables are available at the Examination Section and on the VLE.", "category": "academic", "pinned": false}, {"id": 4, "title": "Inter-department sports day", "body": "Registration for football and volleyball closes on Friday.", "category": "events", "pinned": false}]}
+
