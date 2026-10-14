@@ -1,0 +1,13 @@
+# sid=02230146 context=kind-cte412-02230146 namespace=nb-02230146 time=2026-10-14T15:26:54Z
+$ scripts/summarise.sh evidence/t7-switch2-to-blue-monitor.txt
+Total requests       : 49
+Failed requests      : 0
+First timestamp      : 2026-10-14T15:26:09Z
+Last timestamp       : 2026-10-14T15:26:51Z
+Duration             : 42 s
+First / last FAIL    : none
+Responses per version:
+  1.1.0                19   first 2026-10-14T15:26:09Z   last 2026-10-14T15:26:25Z
+  1.0.0                30   first 2026-10-14T15:26:26Z   last 2026-10-14T15:26:51Z
+Mixed-version window : 0 s (1.1.0 and 1.0.0 both observed)
+
